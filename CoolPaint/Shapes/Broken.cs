@@ -9,6 +9,8 @@ namespace CoolPaint.Shapes
     {
         private GraphicsPath _graphicsPaths;
         
+        Broken()
+        
         public override void Draw(Graphics graphics, Pen pen)
         {
             graphics.DrawPath(pen, _graphicsPaths);
@@ -18,5 +20,10 @@ namespace CoolPaint.Shapes
         {
             _graphicsPaths.PathPoints[_graphicsPaths.PathPoints.Length - 1] = newPoint;
         }
+        public new void AddPoint(Point point)
+        {   
+            
+        }
+        
     }
 }

@@ -15,7 +15,7 @@ namespace CoolPaint
         private Pen _pen;
         public FormMain()
         {
-            InitializeComponent();
+            InitializeComponent();w
         }
 
         private void PickColor(Object sender, EventArgs e)
