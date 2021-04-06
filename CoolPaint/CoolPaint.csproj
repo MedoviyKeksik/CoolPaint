@@ -46,6 +46,12 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Factories\BaseShapeFactory.cs" />
+        <Compile Include="Factories\BrokenFactory.cs" />
+        <Compile Include="Factories\EllipseFactory.cs" />
+        <Compile Include="Factories\LineFactory.cs" />
+        <Compile Include="Factories\PolygonFactory.cs" />
+        <Compile Include="Factories\RectangleFactory.cs" />
         <Compile Include="FormMain.cs">
             <SubType>Form</SubType>
         </Compile>

@@ -45,11 +45,11 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tslLineColor = new System.Windows.Forms.ToolStripLabel();
             this.tsbLineColor = new System.Windows.Forms.ToolStripButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pbMain = new System.Windows.Forms.PictureBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuMainStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,8 +59,8 @@
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).BeginInit();
-            this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize) (this.pbMain)).BeginInit();
+            this.menuMainStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // tsMain
@@ -84,6 +84,7 @@
             this.tsbLine.Size = new System.Drawing.Size(33, 22);
             this.tsbLine.Text = "Line";
             this.tsbLine.ToolTipText = "Line";
+            this.tsbLine.Click += new System.EventHandler(this.ToolButtonClick);
             // 
             // tsbBroken
             // 
@@ -94,6 +95,7 @@
             this.tsbBroken.Name = "tsbBroken";
             this.tsbBroken.Size = new System.Drawing.Size(48, 22);
             this.tsbBroken.Text = "Broken";
+            this.tsbBroken.Click += new System.EventHandler(this.ToolButtonClick);
             // 
             // tsbRectangle
             // 
@@ -104,6 +106,7 @@
             this.tsbRectangle.Name = "tsbRectangle";
             this.tsbRectangle.Size = new System.Drawing.Size(63, 22);
             this.tsbRectangle.Text = "Rectangle";
+            this.tsbRectangle.Click += new System.EventHandler(this.ToolButtonClick);
             // 
             // tsbEllipse
             // 
@@ -115,6 +118,7 @@
             this.tsbEllipse.Size = new System.Drawing.Size(44, 22);
             this.tsbEllipse.Text = "Ellipse";
             this.tsbEllipse.ToolTipText = "Ellipse";
+            this.tsbEllipse.Click += new System.EventHandler(this.ToolButtonClick);
             // 
             // tsbPolygon
             // 
@@ -125,6 +129,7 @@
             this.tsbPolygon.Name = "tsbPolygon";
             this.tsbPolygon.Size = new System.Drawing.Size(55, 22);
             this.tsbPolygon.Text = "Polygon";
+            this.tsbPolygon.Click += new System.EventHandler(this.ToolButtonClick);
             // 
             // toolStripSeparator1
             // 
@@ -143,6 +148,7 @@
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(75, 25);
             this.toolStripComboBox1.Text = "1";
+            this.toolStripComboBox1.TextChanged += new System.EventHandler(this.toolStripComboBox1_TextChanged);
             // 
             // toolStripSeparator3
             // 
@@ -186,28 +192,32 @@
             this.tsbLineColor.Size = new System.Drawing.Size(23, 22);
             this.tsbLineColor.Click += new System.EventHandler(this.PickColor);
             // 
-            // pictureBox1
+            // pbMain
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 49);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(800, 481);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.pbMain.BackColor = System.Drawing.Color.White;
+            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbMain.Location = new System.Drawing.Point(0, 49);
+            this.pbMain.Name = "pbMain";
+            this.pbMain.Size = new System.Drawing.Size(800, 481);
+            this.pbMain.TabIndex = 1;
+            this.pbMain.TabStop = false;
+            this.pbMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pbMain_Paint);
+            this.pbMain.DoubleClick += new System.EventHandler(this.pbMain_DoubleClick);
+            this.pbMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseDown);
+            this.pbMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseMove);
             // 
             // colorDialog
             // 
             this.colorDialog.AnyColor = true;
             // 
-            // menuStrip1
+            // menuMainStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.fileToolStripMenuItem, this.editToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 2;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuMainStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.fileToolStripMenuItem, this.editToolStripMenuItem});
+            this.menuMainStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuMainStrip.Name = "menuMainStrip";
+            this.menuMainStrip.Size = new System.Drawing.Size(800, 24);
+            this.menuMainStrip.TabIndex = 2;
+            this.menuMainStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -264,17 +274,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 530);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pbMain);
             this.Controls.Add(this.tsMain);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.menuMainStrip);
+            this.MainMenuStrip = this.menuMainStrip;
             this.Name = "FormMain";
             this.Text = "CoolPaint";
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize) (this.pbMain)).EndInit();
+            this.menuMainStrip.ResumeLayout(false);
+            this.menuMainStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -288,7 +298,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuMainStrip;
 
         private System.Windows.Forms.ColorDialog colorDialog;
 
@@ -319,7 +329,7 @@
 
         private System.Windows.Forms.ToolStripButton tsbRectangle;
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pbMain;
 
         private System.Windows.Forms.ToolStripButton tsbBroken;
         private System.Windows.Forms.ToolStripButton tsbLine;
