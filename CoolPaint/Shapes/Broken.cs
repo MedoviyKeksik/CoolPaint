@@ -27,7 +27,7 @@ namespace CoolPaint.Shapes
         public override void Draw(Graphics graphics, Pen pen, Brush brush)
         {
             GraphicsPath path = new GraphicsPath(_points.ToArray(), _types.ToArray());
-            graphics.FillPath(brush, path);
+            graphics.DrawPath(pen, path);
         }
 
         public override void Update(Point newPoint)
