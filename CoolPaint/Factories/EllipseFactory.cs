@@ -1,12 +1,13 @@
-﻿using CoolPaint.Shapes;
+﻿using System.Drawing;
+using CoolPaint.Shapes;
 
 namespace CoolPaint.Factories
 {
     public class EllipseFactory : BaseShapeFactory
     {
-        public override BaseShape GetShape()
+        public override BaseShape GetShape(Pen pen, Brush brush)
         {
-            return new Ellipse();
+            return new Ellipse(pen, brush);
         }
     }
 }

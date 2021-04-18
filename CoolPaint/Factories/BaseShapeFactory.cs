@@ -1,9 +1,10 @@
-﻿using CoolPaint.Shapes;
+﻿using System.Drawing;
+using CoolPaint.Shapes;
 
 namespace CoolPaint.Factories
 {
     public abstract class BaseShapeFactory
     {
-        public abstract BaseShape GetShape();
+        public abstract BaseShape GetShape(Pen pen, Brush brush);
     }
 }

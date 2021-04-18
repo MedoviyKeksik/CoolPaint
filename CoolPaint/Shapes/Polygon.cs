@@ -1,30 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace CoolPaint.Shapes
 {
+    [Serializable]
     public class Polygon : BaseShape
     {
+        private int _index;
         private List<Point> _points;
 
-        public Polygon()
+        public Polygon(Pen pen, Brush brush) : base(pen, brush)
         {
             _points = new List<Point>();
+            _index = -1;
         }
 
         public override void SetPostition(Point point)
         {
             _points.Add(point);
+            _index++;
         }
 
-        public override void Draw(Graphics graphics, Pen pen, Brush brush)
+        public override void Draw(Graphics graphics)
         {
-            if (_points.Count > 1)
+            if (_index > 0)
             {
-                graphics.FillPolygon(brush, _points.ToArray());
-                graphics.DrawPolygon(pen, _points.ToArray());
+                Point[] tmp = new Point[_index + 1];
+                _points.CopyTo(0, tmp, 0, _index + 1);
+                graphics.FillPolygon(_colorData.Brush, tmp);
+                graphics.DrawPolygon(_colorData.Pen, tmp);
             }
         }
 
@@ -35,12 +43,47 @@ namespace CoolPaint.Shapes
 
         public override void AddPoint(Point point)
         {
+            CutOff();
             _points.Add(point);
+            _index++;
         }
 
         public override int DrawMode()
         {
             return 1;
+        }
+
+        public override bool CanUndo()
+        {
+            return _index > -1;
+        }
+
+        public override bool CanRedo()
+        {
+            return _index + 1 < _points.Count;
+        }
+
+        public override bool Undo()
+        {
+            if (_index == -1) return false;
+            _index--;
+            return true;
+        }
+
+        public override bool Redo()
+        {
+            if (_index + 1 == _points.Count) return false;
+            _index++;
+            return true;
+        }
+
+        public override void CutOff()
+        {
+            if (_index + 1 < _points.Count)
+            {
+                int tmp = _index + 1;
+                _points.RemoveRange(tmp, _points.Count - tmp);   
+            }
         }
     }
 }

@@ -1,17 +1,21 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace CoolPaint.Shapes
 {
+    [Serializable]
     public class Rectangle : BaseShape
     {
         private System.Drawing.Rectangle _rect;
+        private bool _visible;
 
-        public Rectangle()
+        public Rectangle(Pen pen, Brush brush) : base(pen, brush)
         {
             _rect.X = 0;
             _rect.Y = 0;
             _rect.Width = 0;
             _rect.Height = 0;
+            _visible = false;
         }
 
         private System.Drawing.Rectangle GetRect()
@@ -31,29 +35,51 @@ namespace CoolPaint.Shapes
 
             return res;
         }
-        public Rectangle(int x, int y, int width, int height)
-        {
-            _rect.X = x;
-            _rect.Y = y;
-            _rect.Width = width;
-            _rect.Height = height;
-        }
 
         public override void SetPostition(Point point)
         {
             _rect.Location = point;
+            _visible = true;
         }
 
-        public override void Draw(Graphics graphics, Pen pen, Brush brush)
+        public override void Draw(Graphics graphics)
         {
-            graphics.FillRectangle(brush, GetRect());
-            graphics.DrawRectangle(pen, GetRect());
+            if (_visible)
+            {
+                graphics.FillRectangle(_colorData.Brush, GetRect());
+                graphics.DrawRectangle(_colorData.Pen, GetRect());
+            }
         }
 
         public override void Update(Point newPoint)
         {
             _rect.Width = newPoint.X - _rect.X;
             _rect.Height = newPoint.Y - _rect.Y;
+        }
+        
+        
+        public override bool CanUndo()
+        {
+            return _visible;
+        }
+
+        public override bool CanRedo()
+        {
+            return !_visible;
+        }
+
+        public override bool Redo()
+        {
+            if (_visible) return false;
+            _visible = true;
+            return true;
+        }
+
+        public override bool Undo()
+        {
+            if (!_visible) return false;
+            _visible = false;
+            return true;
         }
     }
 }

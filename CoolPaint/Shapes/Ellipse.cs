@@ -1,39 +1,65 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace CoolPaint.Shapes
 {
+    [Serializable]
     public class Ellipse : BaseShape
     {
+        private bool _visible;
         private int _x, _y;
         private int _width, _height;
 
-        public Ellipse()
+        public Ellipse(Pen pen, Brush brush) : base(pen, brush)
         {
-        }
-        public Ellipse(int x, int y, int width, int height)
-        {
-            _x = x;
-            _y = y;
-            _width = width;
-            _height = height;
+            _visible = false;
         }
 
         public override void SetPostition(Point point)
         {
             _x = point.X;
             _y = point.Y;
+            _visible = true;
         }
 
-        public override void Draw(Graphics graphics, Pen pen, Brush brush)
+        public override void Draw(Graphics graphics)
         {
-            graphics.FillEllipse(brush, _x, _y, _width, _height);
-            graphics.DrawEllipse(pen, _x, _y, _width, _height);
+            if (_visible)
+            {
+                graphics.FillEllipse(_colorData.Brush, _x, _y, _width, _height);
+                graphics.DrawEllipse(_colorData.Pen, _x, _y, _width, _height);
+            }
         }
 
         public override void Update(Point newPoint)
         {
             _width = newPoint.X - _x;
             _height = newPoint.Y - _y;
+        }
+
+        public override bool CanUndo()
+        {
+            return _visible;
+        }
+
+        public override bool CanRedo()
+        {
+            return !_visible;
+        }
+
+        public override bool Redo()
+        {
+            if (_visible) return false;
+            _visible = true;
+            return true;
+        }
+
+        public override bool Undo()
+        {
+            if (!_visible) return false;
+            _visible = false;
+            return true;
         }
     }
 }
