@@ -46,6 +46,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="CustomBinder.cs" />
         <Compile Include="Factories\BaseShapeFactory.cs" />
         <Compile Include="Factories\BrokenFactory.cs" />
         <Compile Include="Factories\EllipseFactory.cs" />

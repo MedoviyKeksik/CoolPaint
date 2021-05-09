@@ -7,8 +7,8 @@ namespace CoolPaint.Shapes
     [Serializable]
     public class Polygon : BaseShape
     {
-        private int _index;
-        private List<Point> _points;
+        protected int _index;
+        protected List<Point> _points;
 
         public Polygon(Pen pen, Brush brush) : base(pen, brush)
         {

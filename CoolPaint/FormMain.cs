@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using CoolPaint.Factories;
@@ -17,6 +18,7 @@ namespace CoolPaint
         private Brush _currentBrush;
         private int _drawMode;
         private string _lastFile;
+        private int _toolIndex;
         public FormMain()
         {
             InitializeComponent();
@@ -35,6 +37,7 @@ namespace CoolPaint
             tsbRectangle.Tag = new RectangleFactory();
             tsbEllipse.Tag = new EllipseFactory();
             tsbPolygon.Tag = new PolygonFactory();
+            _toolIndex = 5;
         }
 
         private void PickColor(Object sender, EventArgs e)
@@ -86,6 +89,7 @@ namespace CoolPaint
                     if (_lastShape != null)
                     {
                         _lastShape.AddPoint(e.Location);
+                        _drawMode = _lastShape.DrawMode();
                         pbMain.Invalidate();
                     }
                     break;
@@ -133,7 +137,6 @@ namespace CoolPaint
             _history.Undo();
             UpdateUndoRedo();
             _lastShape = _history.LastItem;
-            _drawMode = 0;
             pbMain.Invalidate();
         }
 
@@ -176,12 +179,45 @@ namespace CoolPaint
                 _lastFile = openFileDialog.FileName;
                 saveToolStripMenuItem.Enabled = true;
                 BinaryFormatter bf = new BinaryFormatter();
+                bf.Binder = new CustomBinder();
                 using (var fs = new FileStream(_lastFile, FileMode.Open))
                 {
-                    _history = (History) bf.Deserialize(fs);
+                    try
+                    {
+                        _history = (History) bf.Deserialize(fs);
+                    }
+                    catch (System.Runtime.Serialization.SerializationException exception)
+                    {
+                        MessageBox.Show(@"Plugin not loaded: " + exception.Message.Split('"')[1], @"Error!", MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                    }
                 }
             }
             pbMain.Invalidate();
+        }
+
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openPluginFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                
+                Assembly plugin = Assembly.LoadFrom(openPluginFileDialog.FileName);
+                Type[] types = plugin.GetTypes();
+                foreach (var now in types)
+                {
+                    foreach (var attr in now.GetCustomAttributes())
+                    {
+                        var factoryAttribute = attr as FactoryAttribute;
+                        if (factoryAttribute != null)
+                        {
+                            ToolStripButton button = new ToolStripButton(factoryAttribute.ToolName);
+                            button.Tag = Activator.CreateInstance(now);
+                            button.Click += ToolButtonClick;
+                            tsMain.Items.Insert(_toolIndex++, button);
+                        }    
+                    }
+                }
+            }
         }
     }
 }
