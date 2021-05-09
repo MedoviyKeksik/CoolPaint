@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using CoolPaint.Factories;
 using CoolPaint.Shapes;
@@ -22,10 +21,10 @@ namespace Trapezoid
         {
         }
 
-        public override int DrawMode()
+        public override DrawMode DrawMode()
         {
-            if (_index == 3) return 0;
-            return 1;
+            if (_index == 3) return CoolPaint.Shapes.DrawMode.Undefined;
+            return CoolPaint.Shapes.DrawMode.ByPoint;
         }
 
         private bool ClockWise(PointF a, PointF b, PointF c)

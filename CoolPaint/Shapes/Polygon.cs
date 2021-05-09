@@ -45,9 +45,9 @@ namespace CoolPaint.Shapes
             _index++;
         }
 
-        public override int DrawMode()
+        public override DrawMode DrawMode()
         {
-            return 1;
+            return Shapes.DrawMode.ByPoint;
         }
 
         public override bool CanUndo()

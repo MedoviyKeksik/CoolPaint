@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using CoolPaint.Factories;
 using CoolPaint.Shapes;
+using DrawMode = CoolPaint.Shapes.DrawMode;
 
 namespace CoolPaint
 {
@@ -16,7 +17,7 @@ namespace CoolPaint
         private BaseShape _lastShape;
         private Pen _currentPen;
         private Brush _currentBrush;
-        private int _drawMode;
+        private DrawMode _drawMode;
         private string _lastFile;
         private int _toolIndex;
         public FormMain()
@@ -28,7 +29,7 @@ namespace CoolPaint
             tsbLineColor.BackColor = Color.Black;
             tsbFillColor.BackColor = Color.Empty;
             _history = new History();
-            _drawMode = 0;
+            _drawMode = DrawMode.Undefined;
             saveToolStripMenuItem.Enabled = false;
             
             // Initialize buttons with factories
@@ -54,7 +55,7 @@ namespace CoolPaint
 
         private void ToolButtonClick(object sender, EventArgs e)
         {
-            _drawMode = 0;
+            _drawMode = DrawMode.Undefined;
             _currentShapeFactory = (BaseShapeFactory) ((ToolStripButton) sender).Tag;
             foreach (var Tool in tsMain.Items)
             {
@@ -71,7 +72,8 @@ namespace CoolPaint
             if (e.Clicks != 1) return;
             switch (_drawMode)
             {
-                case 0:
+                case DrawMode.Undefined:
+                case DrawMode.DragAndDrop:
                 {
                     if (_currentShapeFactory != null)
                     {
@@ -84,7 +86,7 @@ namespace CoolPaint
                     }
                     break;
                 }
-                case 1:
+                case DrawMode.ByPoint:
                 {
                     if (_lastShape != null)
                     {
@@ -117,7 +119,7 @@ namespace CoolPaint
 
         private void pbMain_DoubleClick(object sender, EventArgs e)
         {
-            _drawMode = 0;
+            _drawMode = DrawMode.Undefined;
         }
 
         private void toolStripComboBox1_TextChanged(object sender, EventArgs e)
@@ -145,7 +147,7 @@ namespace CoolPaint
             _history.Redo();
             UpdateUndoRedo();
             _lastShape = _history.LastItem;
-            _drawMode = 0;
+            _drawMode = DrawMode.Undefined;
             pbMain.Invalidate();
         }
 

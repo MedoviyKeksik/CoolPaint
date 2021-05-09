@@ -50,9 +50,9 @@ namespace CoolPaint.Shapes
             _types.Add((Byte)PathPointType.Line);
             _index++;
         }
-        public override int DrawMode()
+        public override DrawMode DrawMode()
         {
-            return 1;
+            return Shapes.DrawMode.ByPoint;
         }
 
         public override void CutOff()

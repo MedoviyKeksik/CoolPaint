@@ -4,6 +4,12 @@ using System.Runtime.Serialization;
 
 namespace CoolPaint.Shapes
 {
+    public enum DrawMode
+    {
+        DragAndDrop,
+        ByPoint,
+        Undefined
+    }
 
     [Serializable]
     public class ColorData
@@ -48,9 +54,9 @@ namespace CoolPaint.Shapes
         public abstract void Update(Point newPoint);
         public virtual void AddPoint(Point point) { }
 
-        public virtual int DrawMode()
+        public virtual DrawMode DrawMode()
         {
-            return 0;
+            return Shapes.DrawMode.DragAndDrop;
         }
 
         public virtual void CutOff() { }
