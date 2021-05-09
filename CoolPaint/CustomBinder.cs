@@ -4,6 +4,12 @@ using System.Runtime.Serialization;
 
 namespace CoolPaint
 {
+    internal class PluginNotFoundException : Exception
+    {
+        public PluginNotFoundException(string typeName, string assemblyName) : base("Figure not found: " + typeName)
+        {
+        }
+    }
     public class CustomBinder : SerializationBinder
     {
         public override Type BindToType(string assemblyName, string typeName)
@@ -19,6 +25,10 @@ namespace CoolPaint
                 }
             }
 
+            if (type == null)
+            {
+                throw new PluginNotFoundException(typeName, assemblyName);
+            }
             return type;
         }
     }

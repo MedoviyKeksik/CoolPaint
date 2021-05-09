@@ -188,10 +188,9 @@ namespace CoolPaint
                     {
                         _history = (History) bf.Deserialize(fs);
                     }
-                    catch (System.Runtime.Serialization.SerializationException exception)
+                    catch (PluginNotFoundException exception)
                     {
-                        MessageBox.Show(@"Plugin not loaded: " + exception.Message.Split('"')[1], @"Error!", MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        MessageBox.Show(exception.Message, @"Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
